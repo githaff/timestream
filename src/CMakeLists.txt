@@ -1,7 +1,9 @@
 set(SOURCES
+  aux.c
   main.c)
 set(HEADERS
-  aux.h)
+  aux.h
+  config.h.in)
 
 configure_file(config.h.in config.h @ONLY)
 

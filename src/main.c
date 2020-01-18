@@ -1,28 +1,57 @@
+#include "aux.h"
+#include "config.h"
+
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
+
+
+typedef enum Mode { SECONDS, MINUTES } Mode;
+
+Mode g_mode = MINUTES;
 
 
 void usage()
 {
     puts("Usage: timestream [OPTION]");
-    puts("tream time aligned to seconds/minutes");
+    puts("Stream time aligned to seconds/minutes.");
     puts("");
-    puts("ptions");
-    puts("  -h, --help   show help");
-    puts(" -s           output in seconds. Default: minutes");
+    puts("Options");
+    puts("  -h, --help       show help");
+    puts("  -s               output in seconds. Default: minutes");
+    puts("  -v, --version    print version");
 }
 
+void version()
+{
+    printf("%s\n", TIMESTREAM_VERSION_FULL);
+}
+
+void parse_args(int argc, char *argv[])
+{
+    for (int i = 1; i < argc; i++) {
+        if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
+            usage();
+            exit(0);
+        } else if (!strcmp(argv[i], "-v") || !strcmp(argv[i], "--version")) {
+            version();
+            exit(0);
+        } else if (!strcmp(argv[i], "-s")) {
+            g_mode = SECONDS;
+        } else {
+            err("unknown option '%s'.\nTry --help for more information.",
+                argv[i]);
+            exit(-1);
+        }
+    }
+}
 
 int main(int argc, char *argv[])
 {
-    for (int i = 0; i < argc; i++) {
-        if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
-            usage();
-            return 0;
-        }
-    }
+    int ret = 0;
 
-    printf("U-u-u-u\n");
+    parse_args(argc, argv);
 
-    return 0;
+    return ret;
 }
