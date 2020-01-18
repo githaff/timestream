@@ -16,6 +16,10 @@ timestream
 *.lzo
 *.patch
 
+### Clangd completion
+.clangd
+compile_commands.json
+
 ### Project build results
 config.h
 /build
