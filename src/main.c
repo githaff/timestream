@@ -38,7 +38,7 @@ void version()
     printf("%s\n", TIMESTREAM_VERSION_FULL);
 }
 
-void parse_args(int argc, char *argv[])
+int parse_args(int argc, char *argv[])
 {
     for (int i = 1; i < argc; i++) {
         if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
@@ -50,11 +50,12 @@ void parse_args(int argc, char *argv[])
         } else if (!strcmp(argv[i], "-s")) {
             g_mode = SECONDS;
         } else {
-            err("unknown option '%s'.\nTry --help for more information.",
-                argv[i]);
-            exit(-1);
+            err("unknown option '%s'.\nTry --help for more information.", argv[i]);
+            return -1;
         }
     }
+
+    return 0;
 }
 
 int get_time(struct timespec *ts)
@@ -153,10 +154,13 @@ int init()
     return ret;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     int ret = 0;
 
-    parse_args(argc, argv);
+    ret = parse_args(argc, argv);
+    if (ret < 0)
+        return ret;
 
     ret = init();
     if (ret < 0)
