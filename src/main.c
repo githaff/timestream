@@ -90,9 +90,10 @@ void sig_handler(int sig)
          * this one is called no more frequent than once a second. */
         localtime_r(&ts.tv_sec, &tm);
         if (g_mode == MINUTES)
-            printf("%d:%d\n", tm.tm_hour, tm.tm_min);
+            printf("%02d:%02d\n", tm.tm_hour, tm.tm_min);
         else
-            printf("%d:%d:%d\n", tm.tm_hour, tm.tm_min, tm.tm_sec);
+            printf("%02d:%02d:%02d\n", tm.tm_hour, tm.tm_min, tm.tm_sec);
+        fflush(stdout);
     } else if (sig == SIGUSR2) {
         g_mode = g_mode == SECONDS ? MINUTES : SECONDS;
         setup();
